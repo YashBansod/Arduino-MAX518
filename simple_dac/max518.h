@@ -35,7 +35,7 @@ public:
     static const uint8_t SET_OUTPUT_1_CMD   = 0x00;
     static const uint8_t SET_OUTPUT_2_CMD   = 0x01;
 
-    Max518(uint8_t dev_addr = DEF_ADDR);
+    Max518(uint8_t dev_addr = DEF_ADDR, TwoWire& wire = Wire);
 
     bool reset() const;
     bool power_up() const;
@@ -46,53 +46,53 @@ public:
 
 private:
     uint8_t dev_addr_;
-
+    TwoWire& wire_;
 };
 
-Max518::Max518(uint8_t dev_addr) {
+Max518::Max518(uint8_t dev_addr, TwoWire& wire) : wire_(wire){
     dev_addr_ = dev_addr;
-    Wire.begin();
+    wire_.begin();
 }
 
 bool Max518::reset() const {
-    Wire.beginTransmission(dev_addr_);
-    Wire.write(RESET_CMD);
-    return (Wire.endTransmission() == 0);
+    wire_.beginTransmission(dev_addr_);
+    wire_.write(RESET_CMD);
+    return (wire_.endTransmission() == 0);
 }
 
 bool Max518::power_up() const {
-    Wire.beginTransmission(dev_addr_);
-    Wire.write(POWER_UP_CMD);
-    return (Wire.endTransmission() == 0);
+    wire_.beginTransmission(dev_addr_);
+    wire_.write(POWER_UP_CMD);
+    return (wire_.endTransmission() == 0);
 }
 
 bool Max518::power_down() const {
-    Wire.beginTransmission(dev_addr_);
-    Wire.write(POWER_DOWN_CMD);
-    return (Wire.endTransmission() == 0);
+    wire_.beginTransmission(dev_addr_);
+    wire_.write(POWER_DOWN_CMD);
+    return (wire_.endTransmission() == 0);
 }
 
 bool Max518::set_output_1(uint8_t out_1) const {
-    Wire.beginTransmission(dev_addr_);
-    Wire.write(SET_OUTPUT_1_CMD);
-    Wire.write(out_1);
-    return (Wire.endTransmission() == 0);
+    wire_.beginTransmission(dev_addr_);
+    wire_.write(SET_OUTPUT_1_CMD);
+    wire_.write(out_1);
+    return (wire_.endTransmission() == 0);
 }
 
 bool Max518::set_output_2(uint8_t out_2) const {
-    Wire.beginTransmission(dev_addr_);
-    Wire.write(SET_OUTPUT_2_CMD);
-    Wire.write(out_2);
-    return (Wire.endTransmission() == 0);
+    wire_.beginTransmission(dev_addr_);
+    wire_.write(SET_OUTPUT_2_CMD);
+    wire_.write(out_2);
+    return (wire_.endTransmission() == 0);
 }
 
 bool Max518::set_output_1_2(uint8_t out_1, uint8_t out_2) const {
-    Wire.beginTransmission(dev_addr_);
-    Wire.write(SET_OUTPUT_1_CMD);
-    Wire.write(out_1);
-    Wire.write(SET_OUTPUT_2_CMD);
-    Wire.write(out_2);
-    return (Wire.endTransmission() == 0);
+    wire_.beginTransmission(dev_addr_);
+    wire_.write(SET_OUTPUT_1_CMD);
+    wire_.write(out_1);
+    wire_.write(SET_OUTPUT_2_CMD);
+    wire_.write(out_2);
+    return (wire_.endTransmission() == 0);
 }
 
 #endif //ARDUINO_MAX518_H
